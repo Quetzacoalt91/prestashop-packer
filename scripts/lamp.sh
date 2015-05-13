@@ -2,10 +2,10 @@
 
 apt-get -y update
 
-logger "Installing PrestaShop"
+logger "Installing packages"
 
 db_user=root
-db_password=grolol
+db_password=123456789
 db_name=prestashop
 
 root_path="/var/www/html/";

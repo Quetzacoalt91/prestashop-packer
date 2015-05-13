@@ -6,6 +6,7 @@
 	},
 	"builders": [
 		{
+			"name": "virtualbox",
 			"type": "virtualbox-iso",
 			"guest_os_type": "Ubuntu_64",
 			"iso_url": "http://releases.ubuntu.com/14.04.2/ubuntu-14.04.2-server-amd64.iso",
@@ -26,30 +27,7 @@
 				"initrd=/install/initrd.gz -- <enter>"
 			],
 			"boot_wait": "12s",
-			"http_directory": "../http"
-		},
-		{
-			"type": "vmware-iso",
-			"guest_os_type": "Ubuntu_64",
-			"iso_url": "http://releases.ubuntu.com/14.04.2/ubuntu-14.04.2-server-amd64.iso",
-			"iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195",
-			"iso_checksum_type": "md5",
-			"ssh_username": "packer",
-			"ssh_password": "packer",
-			"ssh_wait_timeout": "10000s",
-			"disk_size": "10000",
-			"shutdown_command": "shutdown -P now",
-			"boot_command": [
-				"<esc><esc><enter><wait>",
-				"/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-14.04-amd64/preseed.cfg ",
-				"debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-				"hostname={{ .Name }} ",
-				"fb=false debconf/frontend=noninteractive ",
-				"keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
-				"initrd=/install/initrd.gz -- <enter>"
-			],
-			"boot_wait": "12s",
-			"http_directory": "../http"
+			"http_directory": "http"
 		},
 		{
 			"type": "azure",
@@ -61,7 +39,7 @@
 			"os_image_label": "Ubuntu Server 14.04 LTS",
 			"location": "West Europe",
 			"instance_size": "Small",
-			"user_image_label": "PrestaShop_Ubuntu_Serv14"
+			"user_image_label": "PrestaShop_LAMP"
 		}
 	],
 	"provisioners": [
@@ -84,6 +62,13 @@
 				"scripts/lamp.sh",
 				"scripts/get_prestashop.sh"
 			]
+		}
+	],
+	"post-processors": [
+		{
+			"type": "vagrant",
+			"only": ["virtualbox"],
+			"keep_input_artifact": true
 		}
 	]
 }
