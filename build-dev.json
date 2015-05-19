@@ -2,13 +2,17 @@
 	"variables": {
 		"azure_sn": "",
 		"azure_ps": "",
-		"azure_sa": ""
+		"azure_sa": "prestashopimages",
+		"azure_sac": "builddev",
+		"docker_login_username": "",
+		"docker_login_password": ""
 	},
 	"builders": [
 		{
 			"name": "virtualbox",
 			"type": "virtualbox-iso",
 			"guest_os_type": "Ubuntu_64",
+			"vm_name": "lamp-prestashop-16",
 			"iso_url": "http://releases.ubuntu.com/14.04.2/ubuntu-14.04.2-server-amd64.iso",
 			"iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195",
 			"iso_checksum_type": "md5",
@@ -30,11 +34,17 @@
 			"http_directory": "http"
 		},
 		{
+			"name": "docker",
+			"type": "docker",
+			"image": "ubuntu",
+			"commit": "true"
+		},
+		{
 			"type": "azure",
 			"publish_settings_path": "{{user `azure_ps`}}",
 			"subscription_name": "{{user `azure_sn`}}",
 			"storage_account": "{{user `azure_sa`}}",
-			"storage_account_container": "prestashop-images",
+			"storage_account_container": "{{user `azure_sac`}}",
 			"os_type": "Linux",
 			"os_image_label": "Ubuntu Server 14.04 LTS",
 			"location": "West Europe",
@@ -62,6 +72,16 @@
 				"scripts/lamp.sh",
 				"scripts/get_prestashop.sh"
 			]
+		},
+		{
+			"type": "file",
+			"source": "conf_files/",
+			"destination": "/tmp"
+		},
+		{
+			"type": "shell",
+			"execute_command": "echo 'packer' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+			"script": "scripts/prepare_prestashop.sh"
 		}
 	],
 	"post-processors": [
@@ -69,6 +89,18 @@
 			"type": "vagrant",
 			"only": ["virtualbox"],
 			"keep_input_artifact": true
+		},
+		{
+			"only": ["docker"],
+			"type": "docker-tag",
+			"repository": "quetzacoalt/prestashop",
+			"tag": "1.6.0"
+		},
+		{
+			"only": ["docker"],
+			"type": "docker-push",
+			"login_username": "{{user `docker_login_username`}}",
+			"login_password": "{{user `docker_login_password`}}"
 		}
 	]
 }
