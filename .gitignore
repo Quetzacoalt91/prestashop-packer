@@ -1,5 +1,11 @@
 # Cache objects
 packer_cache/
 
+# Personnal variables
+vars/
+
+# Generated virtualbox appliance
+output-virtualbox/
+
 # For built boxes
 *.box
