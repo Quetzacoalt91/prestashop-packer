@@ -2,6 +2,8 @@
 
 logger "Downloading PrestaShop ..."
 
-wget "https://www.prestashop.com/download/latest " -O prestashop.zip
+apt-get -y install wget
+
+wget "https://www.prestashop.com/download/latest" -O prestashop.zip
 
 logger "PrestaShop downloaded"

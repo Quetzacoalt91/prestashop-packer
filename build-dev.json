@@ -5,14 +5,15 @@
 		"azure_sa": "prestashopimages",
 		"azure_sac": "builddev",
 		"docker_login_username": "",
-		"docker_login_password": ""
+		"docker_login_password": "",
+		"docker_login_email":""
 	},
 	"builders": [
 		{
 			"name": "virtualbox",
 			"type": "virtualbox-iso",
 			"guest_os_type": "Ubuntu_64",
-			"vm_name": "lamp-prestashop-16",
+			"vm_name": "lamp-prestashop-1610",
 			"iso_url": "http://releases.ubuntu.com/14.04.2/ubuntu-14.04.2-server-amd64.iso",
 			"iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195",
 			"iso_checksum_type": "md5",
@@ -69,7 +70,15 @@
 			"type": "shell",
 			"execute_command": "echo 'packer' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
 			"scripts": [
-				"scripts/lamp.sh",
+				"scripts/lamp/mysql.sh"
+			],
+			"except": ["docker"]
+		},
+		{
+			"type": "shell",
+			"execute_command": "echo 'packer' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+			"scripts": [
+				"scripts/lamp/apache-php.sh",
 				"scripts/get_prestashop.sh"
 			]
 		},
