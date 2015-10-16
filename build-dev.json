@@ -75,17 +75,17 @@
 			"except": ["docker"]
 		},
 		{
+			"type": "file",
+			"source": "conf_files/",
+			"destination": "/tmp"
+		},
+		{
 			"type": "shell",
 			"execute_command": "echo 'packer' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
 			"scripts": [
 				"scripts/lamp/apache-php.sh",
 				"scripts/get_prestashop.sh"
 			]
-		},
-		{
-			"type": "file",
-			"source": "conf_files/",
-			"destination": "/tmp"
 		},
 		{
 			"type": "shell",
