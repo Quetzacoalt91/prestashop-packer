@@ -14,7 +14,9 @@ db_name=prestashop
 echo mysql-server-5.6 mysql-server/root_password password $db_password | debconf-set-selections
 echo mysql-server-5.6 mysql-server/root_password_again password $db_password | debconf-set-selections
 
-apt-get -y install mysql-server
+apt-get -y install mysql-server-5.6
+
+vm /tmp/mysql-azure.cnf /etc/mysql/conf.d/mysql-azure.cnf
 
 if [ "$db_password" == "" ]; then
 	mysqladmin -u$db_user create $db_name --force;
