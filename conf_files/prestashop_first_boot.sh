@@ -20,7 +20,7 @@ if [ ! -f $FLAG ]; then
 
         logger "Preparing PrestaShop ..."
 
-        unzip -q /tmp/prestashop.zip
+        unzip -q /tmp/prestashop.zip -d /tmp
         mv /tmp/prestashop/* $root_path
 
         rmdir /tmp/prestashop

@@ -83,6 +83,7 @@
 			"type": "shell",
 			"execute_command": "echo 'packer' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
 			"scripts": [
+				"scripts/add_boot_script.sh",
 				"scripts/lamp/apache-php.sh",
 				"scripts/get_prestashop.sh"
 			]
