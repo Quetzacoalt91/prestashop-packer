@@ -10,7 +10,7 @@ which apache2 > /dev/null
 FLAG="/var/log/prestashop_init.log"
 if [ ! -f $FLAG ]; then
 
-    logger "Downloading PrestaShop ..."
+    logger "Re-Downloading PrestaShop ..."
 
     wget "https://www.prestashop.com/download/latest" -O /tmp/prestashop.zip
      if [ $? = 0 ]; then
@@ -26,7 +26,6 @@ if [ ! -f $FLAG ]; then
         rmdir /tmp/prestashop
         rm /tmp/prestashop.zip
         cd $root_path
-        rm index.html
 
         chown -R www-data:www-data $root_path;
         chmod -R g+w $root_path;
